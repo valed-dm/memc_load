@@ -1,0 +1,6 @@
+beautifulsoup4==4.12.3
+google==3.0.0
+hashring==1.5.1
+protobuf==3.20.1
+python-memcached==1.62
+soupsieve==2.5
