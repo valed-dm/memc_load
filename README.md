@@ -11,3 +11,5 @@
 Результат выполнения:
 
 [<img src="images/img_02.png" width="1000"/>]()
+[<img src="images/img_03.png" width="1000"/>]()
+[<img src="images/img_04.png" width="1000"/>]()
