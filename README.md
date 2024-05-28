@@ -50,6 +50,13 @@ memc_addr = self.device_memc.get(appsinstalled.dev_type)
 [<img src="images/img_07.png" width="300"/>]()
 [<img src="images/img_06.png" width="1000"/>]()
 [<img src="images/img_03.png" width="1000"/>]()
+
+Добавлена пакетная обработка данных в class Worker: batch_size = 1000.
+Рост производительности 27%.
+Скорость 9500 -> 12100 it/s. Время 6:00 -> 4:40
+
+[<img src="images/img_11.png" width="500"/>]()
+
 [<img src="images/img_08.png" width="300"/>]()
 [<img src="images/img_05.png" width="1000"/>]()
 [<img src="images/img_04.png" width="1000"/>]()
