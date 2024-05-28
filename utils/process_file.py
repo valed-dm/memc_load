@@ -43,6 +43,8 @@ def process_file(
         if queue.qsize() >= num_threads * 2:
             queue.join()
 
+    # ensures that the main thread waits until all remaining tasks in the queue
+    # have been processed before proceeding.
     queue.join()
 
     for _ in range(num_threads):
