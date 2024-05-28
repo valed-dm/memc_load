@@ -1,6 +1,6 @@
 import collections
 import logging
-from typing import Optional
+from typing import List, Optional
 
 import memcache
 
@@ -12,20 +12,28 @@ AppsInstalled = collections.namedtuple(
 )
 
 
-def insert_appsinstalled(memc_client: memcache.Client, appsinstalled: AppsInstalled, dry_run: bool = False) -> bool:
-    ua = appsinstalled_pb2.UserApps()
-    ua.lat = appsinstalled.lat
-    ua.lon = appsinstalled.lon
-    key = "%s:%s" % (appsinstalled.dev_type, appsinstalled.dev_id)
-    ua.apps.extend(appsinstalled.apps)
-    packed = ua.SerializeToString()
+def insert_appsinstalled(
+        memc_client: memcache.Client,
+        batch: List[AppsInstalled],
+        dry_run: bool = False
+) -> bool:
     try:
-        if dry_run:
-            logging.debug("%s -> %s" % (key, str(ua).replace("\n", " ")))
-        else:
-            memc_client.set(key, packed)
+        packed_batch = {}
+        for appsinstalled in batch:
+            ua = appsinstalled_pb2.UserApps()
+            ua.lat = appsinstalled.lat
+            ua.lon = appsinstalled.lon
+            ua.apps.extend(appsinstalled.apps)
+            key = f"{appsinstalled.dev_type}:{appsinstalled.dev_id}"
+            packed = ua.SerializeToString()
+            if dry_run:
+                logging.debug("%s -> %s" % (key, str(ua).replace("\n", " ")))
+            else:
+                packed_batch[key] = packed
+        if not dry_run:
+            memc_client.set_multi(packed_batch)
     except Exception as exc:
-        logging.exception("Cannot write to memc: %s" % exc)
+        logging.exception(f"Cannot write to memc: {exc}")
         return False
     return True
 
