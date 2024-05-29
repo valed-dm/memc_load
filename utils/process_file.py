@@ -30,7 +30,14 @@ def process_file(
 
     pbar = tqdm(total=total_lines, desc=f"Processing {os.path.basename(file_path)}")
 
-    memc_clients = {addr: memcache.Client([addr]) for addr in device_memc.values()}
+    memc_clients = {
+        addr: memcache.Client([addr]) for addr in (
+            "127.0.0.1:33013",
+            "127.0.0.1:33014",
+            "127.0.0.1:33015",
+            "127.0.0.1:33016"
+        )
+    }
 
     threads: List[Worker] = []
     for _ in range(num_threads):
